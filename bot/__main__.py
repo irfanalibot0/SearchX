@@ -9,19 +9,11 @@ from bot.helper.telegram_helper.filters import CustomFilters
 from bot.helper.telegram_helper.message_utils import *
 
 def start(update, context):
-    buttons = ButtonMaker()
-    buttons.buildbutton("Owner", "https://t.me/RakeshKrGorai")
-    uname = f'<a href="tg://user?id={update.message.from_user.id}">{update.message.from_user.first_name}</a>'
-    reply_markup = InlineKeyboardMarkup(buttons.build_menu(1))
     if CustomFilters.authorized_user(update) or CustomFilters.authorized_chat(update):
         if update.message.chat.type == "private":
-            start_string = f'''Hey! {uname},\n
-This bot can mirror all your links to Google Drive! and also can Upload them on Telegram if you want.
-Type /{BotCommands.HelpCommand} to get a list of available commands
-'''
-        sendMarkup(start_string, context.bot, update, reply_markup)
-    else:            
-        sendMessage("<b>I'm alive :)</b>", context.bot, update)
+            sendMessage("<b>Access granted</b>", context.bot, update)
+        else:
+            sendMessage("<b>I'm alive :)</b>", context.bot, update)
         LOGGER.info('Granted: {} [{}]'.format(update.message.from_user.first_name, update.message.from_user.id))
     else:
         sendMessage("<b>Access denied</b>", context.bot, update)
